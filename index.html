@@ -24,18 +24,18 @@
             <form>
               <div class="form-group">
                 <label>Email:</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                <input type="email" class="form-control" id="register-email" aria-describedby="emailHelp" placeholder="Enter email">
                 <small id="emailHelp" class="form-text text-muted">exemplo@email.com</small>
               </div>
               <div class="form-group">
                 <label>Senha:</label>
-                <input type="password" class="form-control" id="password" placeholder="Password">
+                <input type="password" class="form-control" id="register-password" placeholder="Password">
               </div>
             </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
-          <button type="button" class="btn btn-primary">Cadastrar</button>
+          <button type="button" class="btn btn-primary" id="register-user-button">Cadastrar</button>
         </div>
       </div>
     </div>
@@ -48,13 +48,13 @@
           <div class="h-100 login-box">
             <form>
               <div class="form-group">
-                <input type="email" class="form-control w-50 offset-sm-3" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                <input type="email" class="form-control w-50 offset-sm-3" id="sign-in-email" aria-describedby="emailHelp" placeholder="Enter email">
                 <small id="emailHelp" class="form-text text-muted">exemplo@email.com</small>
               </div>
               <div class="form-group">
-                <input type="password" class="form-control w-50 offset-sm-3" id="password" placeholder="Password">
+                <input type="password" class="form-control w-50 offset-sm-3" id="sign-in-password" placeholder="Password">
               </div>
-              <button type="submit" class="btn btn-primary login-button">Entrar</button>
+              <button type="submit" class="btn btn-primary" id="login-button">Entrar</button>
             </form>
             <div>
               <button type="submit" data-toggle="modal" data-target="#register-modal" class="btn btn-primary my-3 register-button">Nova conta</button>
