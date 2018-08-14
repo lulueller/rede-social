@@ -1,15 +1,15 @@
 $(document).ready(function() {
   $('#login-button').click(logInClick);
   
-  $('#register-user-button').on('click', function() {
+  $('#register-user-button').on('click', function(event) {
     event.preventDefault();
 
     var email = $('#register-email').val();
     var password = $('#register-password').val();
 
     registerUser(email, password);
-  };
-  
+  });
+
 });
 
 function logInClick(event) {
@@ -21,20 +21,19 @@ function logInClick(event) {
   logInUser(email, password);
 }
 
-// function registerClick(event) {
-//   event.preventDefault();
+function registerClick(event) {
+  event.preventDefault();
 
-//   var email = $('#register-email').val();
-//   var password = $('#register-password').val();
+  var email = $('#register-email').val();
+  var password = $('#register-password').val();
 
-//   registerUser(email, password);
-// }
+  registerUser(email, password);
+}
 
 function logInUser(email, password) {
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then(function(response) {
       var userId = response.user.uid;
-      console.log('olá');
       // adicionar a função que redireciona para a próxima tela (newsfeed?)
     })
     .catch(function(error) {
@@ -47,8 +46,7 @@ function logInUser(email, password) {
 
 function registerUser(email, password) {
   firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(function(response) {
-      console.log('oie');
+    .then(function(response) 
       // adicionar a função que redireciona para a próxima tela (newsfeed?) 
     })
     .catch(function(error) {
