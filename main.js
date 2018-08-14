@@ -34,7 +34,7 @@ function logInUser(email, password) {
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then(function(response) {
       var userId = response.user.uid;
-      // adicionar a função que redireciona para a próxima tela (newsfeed?)
+      redirectToNewsFeed(userId);
     })
     .catch(function(error) {
       var errorCode = error.code;
@@ -46,9 +46,10 @@ function logInUser(email, password) {
 
 function registerUser(email, password) {
   firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(function(response) 
-      // adicionar a função que redireciona para a próxima tela (newsfeed?) 
-    })
+    .then(function(response) {
+      var userId = response.user.uid;
+      redirectToNewsFeed(userId); 
+    })    
     .catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -56,3 +57,6 @@ function registerUser(email, password) {
     });
 }
 
+function redirectToNewsFeed(userId) {
+  window.location = "profile.html?id=" + userId;
+}
