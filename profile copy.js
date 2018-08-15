@@ -1,19 +1,17 @@
 var database = firebase.database();
 var USER_ID = window.location.search.match(/\?id=(.*)/)[1];
-var selectedFile;
 
 $(document).ready(function() {
 
   getPostsFromDB();
   $('#post-button').click(buttonClick);
-  $('#upload-button').click(uploadBtnClick);
 
 });
 
 function buttonClick() {
   var newPost = $('#post-content').val();
   $('#post-content').val('');
-
+  
   var postsFromDB = addPostToDB(newPost);
 
   createPost(newPost, postsFromDB.key);
@@ -53,14 +51,4 @@ function createPost(content, key) {
     database.ref(USER_ID + "/" + key).remove();
     $(this).parents('li').remove();
   });
-}
-
-function uploadBtnClick() {
-  var file = $('#file-input').prop('files')[0];
-  var imageRef = firebase.storage().ref().child(USER_ID + "/" + 'dogo');
-  imageRef.put(file).then(
-    function(snapshot){
-      console.log('Upload concluido');
-    }
-  );
 }
