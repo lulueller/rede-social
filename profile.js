@@ -1,5 +1,6 @@
 var database = firebase.database();
 var USER_ID = window.location.search.match(/\?id=(.*)/)[1];
+var selectedFile;
 
 $(document).ready(function() {
 
@@ -90,7 +91,17 @@ function createPost(content, likes, key) {
       .then(function() {
         return database.ref(USER_ID + "/" + key).update({
         likes: likes
-        });    
-      });   
+        });
+      });
   });
+}
+
+function uploadBtnClick() {
+  var file = $('#file-input').prop('files')[0];
+  var imageRef = firebase.storage().ref().child(USER_ID + "/" + 'dogo');
+  imageRef.put(file).then(
+    function(snapshot){
+      console.log('Upload concluido');
+    }
+  );
 }
