@@ -93,3 +93,9 @@ function uploadBtnClick() {
       });
     });
 }
+
+// Postar texto + imagem
+//   + text area + input file + botao pra postar
+//   + salvar texto no banco
+//   + pegar id do post no banco
+//   + tenho arquivo ? se sim, upload junto com texto
