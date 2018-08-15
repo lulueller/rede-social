@@ -78,10 +78,18 @@ function createPost(content, likes, key) {
 
 function uploadBtnClick() {
   var file = $('#file-input').prop('files')[0];
-  var imageRef = firebase.storage().ref().child(USER_ID + "/" + 'dogo');
-  imageRef.put(file).then(
-    function(snapshot){
-      console.log('Upload concluido');
-    }
-  );
+  console.log(file.name);
+  var imageRef = firebase.storage().ref().child(USER_ID + "/" + file.name);
+  imageRef.put(file)
+    .then(
+      function(snapshot){
+        console.log(snapshot);
+        console.log(imageRef.fullPath);
+      }
+    )
+    .then(() => {
+      imageRef.getDownloadURL().then((val) => {
+        console.log(val);
+      });
+    });
 }
