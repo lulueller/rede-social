@@ -12,9 +12,9 @@ function buttonClick() {
   var newPost = $('#post-content').val();
   $('#post-content').val('');
 
-  var postsFromDB = addPostToDB(newPost, 0);
+  var postsFromDB = addPostToDB(newPost);
 
-  createPost(newPost, postsFromDB.key);
+  createPost(newPost, 0, postsFromDB.key);
 }
 
 function getPostsFromDB() {
@@ -41,19 +41,19 @@ function createPost(content, likes, key) {
     <li>
       <div data-post-id=${key} class="my-2">
         <span data-content-id="${key}">${content}</span><br>
-        <button type="button" class="btn btn-light" data-like-id="${key}-like">${likes} Curtidas</button>
-        <button type="button" class="btn btn-dark" data-button-id="${key}-ed">Editar</button>
-        <button type="button" class="btn btn-dark" data-button-id="${key}-bt">Excluir</button>
+        <button type="button" class="btn btn-light" data-like-id="${key}">${likes} Curtidas</button>
+        <button type="button" class="btn btn-dark" data-edit-id="${key}">Editar</button>
+        <button type="button" class="btn btn-dark" data-delete-id="${key}-bt">Excluir</button>
       </div>
     </li>
   `);
 
-  $(`button[data-button-id="${key}-bt"]`).click(function() {
+  $(`button[data-delete-id="${key}"]`).click(function() {
     database.ref(USER_ID + "/" + key).remove();
     $(this).parents('li').remove();
   });
 
-  $(`button[data-button-id="${key}-id"]`).click(function() {
+  $(`button[data-edit-id="${key}"]`).click(function() {
     var editedContent = prompt(`Editando esse post: ${content}`);
     $(`span[data-content-id=${key}]`).html(editedContent);
     return database.ref(USER_ID + "/" + key).update({
@@ -61,7 +61,7 @@ function createPost(content, likes, key) {
     });
   });
 
-  $(`button[data-like-id="${key}-like"]`).click(function() {
+  $(`button[data-like-id="${key}"]`).click(function() {
 
     $(this).html(`${likes += 1} Curtidas`);
 
