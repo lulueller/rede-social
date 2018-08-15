@@ -38,15 +38,6 @@ function addPostToDB(post) {
   });
 }
 
-function uploadBtnClick() {
- var file = $('#file-input').prop('files')[0];
- var imageRef = firebase.storage().ref().child(USER_ID + "/" + 'dogo');
- imageRef.put(file).then(
-   function(snapshot){
-     console.log('Upload concluido');
-   });
-}
-
 function createPost(content, likes, key) {
   $('#posts-container').append(`
     <li>
@@ -98,10 +89,11 @@ function createPost(content, likes, key) {
 
 function uploadBtnClick() {
   var file = $('#file-input').prop('files')[0];
-  var imageRef = firebase.storage().ref().child(USER_ID + "/" + 'dogo');
+  const name = (+new Date()) + '-' + file.name;
+  var imageRef = firebase.storage().ref().child(USER_ID + "/" + name);
   imageRef.put(file).then(
     function(snapshot){
-      console.log('Upload concluido');
+      alert('Upload concluido');
     }
   );
 }
