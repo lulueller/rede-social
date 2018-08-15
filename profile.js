@@ -16,7 +16,7 @@ function buttonClick() {
 
   var postsFromDB = addPostToDB(newPost);
 
-  createPost(newPost, postsFromDB.key);
+  createPost(newPost, 0, postsFromDB.key);
 }
 
 function getPostsFromDB() {
@@ -26,32 +26,53 @@ function getPostsFromDB() {
         var childKey = childSnapshot.key;
         var childData = childSnapshot.val();
 
-        createPost(childData.content, childKey);
+        createPost(childData.content, childData.likes, childKey);
       });
     });
 }
 
 function addPostToDB(post) {
   return database.ref(USER_ID).push({
-    content: post
+    content: post,
+    likes: 0
   });
 }
 
-function createPost(content, key) {
-  var newPost = $('#post-content').val();
-
+function createPost(content, likes, key) {
   $('#posts-container').append(`
     <li>
       <div data-post-id=${key} class="my-2">
-        ${content}<br>
-        <button type="button" class="btn btn-dark" data-button-id="${key}-bt">Excluir</button>
+        <span data-content-id="${key}">${content}</span><br>
+        <button type="button" class="btn btn-light" data-like-id="${key}">${likes} Curtidas</button>
+        <button type="button" class="btn btn-dark" data-edit-id="${key}">Editar</button>
+        <button type="button" class="btn btn-dark" data-delete-id="${key}-bt">Excluir</button>
       </div>
     </li>
   `);
 
-  $(`button[data-button-id="${key}-bt"]`).click(function() {
+  $(`button[data-delete-id="${key}"]`).click(function() {
     database.ref(USER_ID + "/" + key).remove();
     $(this).parents('li').remove();
+  });
+
+  $(`button[data-edit-id="${key}"]`).click(function() {
+    var editedContent = prompt(`Editando esse post: ${content}`);
+    $(`span[data-content-id=${key}]`).html(editedContent);
+    return database.ref(USER_ID + "/" + key).update({
+      content: editedContent
+    });
+  });
+
+  $(`button[data-like-id="${key}"]`).click(function() {
+
+    $(this).html(`${likes += 1} Curtidas`);
+
+    database.ref(USER_ID + "/" + key).once('value')
+      .then(function() {
+        return database.ref(USER_ID + "/" + key).update({
+        likes: likes
+        });
+      });
   });
 }
 
