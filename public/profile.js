@@ -93,7 +93,6 @@ function uploadBtnClick() {
   var imageRef = firebase.storage().ref().child(USER_ID + "/" + name);
   imageRef.put(file).then(
     function(snapshot){
-      alert('Upload concluido');
-    }
-  );
+      alert('Upload concluído!');
+    });
 }
