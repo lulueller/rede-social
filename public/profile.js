@@ -45,7 +45,7 @@ function createPost(content, likes, key) {
         <span data-content-id="${key}">${content}</span><br>
         <button type="button" class="btn btn-light" data-like-id="${key}">${likes} Curtidas</button>
         <button type="button" class="btn btn-dark" data-edit-id="${key}">Editar</button>
-        <button type="button" class="btn btn-dark" data-delete-id="${key}-bt">Excluir</button>
+        <button type="button" class="btn btn-dark" data-delete-id="${key}">Excluir</button>
       </div>
     </li>
   `);
@@ -55,12 +55,23 @@ function createPost(content, likes, key) {
     $(this).parents('li').remove();
   });
 
-  $(`button[data-edit-id="${key}"]`).click(function() {
-    var editedContent = prompt(`Editando esse post: ${content}`);
-    $(`span[data-content-id=${key}]`).html(editedContent);
-    return database.ref(USER_ID + "/" + key).update({
-      content: editedContent
-    });
+  $(`button[data-edit-id="${key}"]`).click(function editPost() {
+    $(`span[data-content-id="${key}"]`).html(`
+        <textarea class="my-2" style="resize: none" id="edited-content" placeholder="Reescreva o post..."></textarea>
+        <button type="button" class="btn btn-secondary mb-5" data-edited-post-id="${key}">Ok</button>
+      `);
+
+    var editedContent = $('#edited-content').val();
+    $(`button[data-edited-post-id="${key}"]`).click(function() {
+      $(`button[data-like-id="${key}"]`).insertBefore(`<span data-content-id="${key}">${editedContent}</span><br>`);
+    })
+    
+    database.ref(USER_ID + "/" + key).once('value')
+      .then(function() {
+        return database.ref(USER_ID + "/" + key).update({
+        content: editedContent
+        });    
+      }); 
   });
 
   $(`button[data-like-id="${key}"]`).click(function() {
@@ -78,6 +89,13 @@ function createPost(content, likes, key) {
 
 function uploadBtnClick() {
   var file = $('#file-input').prop('files')[0];
+
+  // const name = (+new Date()) + '-' + file.name;
+  // var imageRef = firebase.storage().ref().child(USER_ID + "/" + name);
+  // imageRef.put(file).then(
+  //   function(snapshot){
+  //     alert('Upload concluído!');
+
   console.log(file.name);
   var imageRef = firebase.storage().ref().child(USER_ID + "/" + file.name);
   imageRef.put(file)
