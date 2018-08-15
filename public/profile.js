@@ -89,10 +89,25 @@ function createPost(content, likes, key) {
 
 function uploadBtnClick() {
   var file = $('#file-input').prop('files')[0];
-  const name = (+new Date()) + '-' + file.name;
-  var imageRef = firebase.storage().ref().child(USER_ID + "/" + name);
-  imageRef.put(file).then(
-    function(snapshot){
-      alert('Upload concluído!');
+
+  // const name = (+new Date()) + '-' + file.name;
+  // var imageRef = firebase.storage().ref().child(USER_ID + "/" + name);
+  // imageRef.put(file).then(
+  //   function(snapshot){
+  //     alert('Upload concluído!');
+
+  console.log(file.name);
+  var imageRef = firebase.storage().ref().child(USER_ID + "/" + file.name);
+  imageRef.put(file)
+    .then(
+      function(snapshot){
+        console.log(snapshot);
+        console.log(imageRef.fullPath);
+      }
+    )
+    .then(() => {
+      imageRef.getDownloadURL().then((val) => {
+        console.log(val);
+      });
     });
 }
