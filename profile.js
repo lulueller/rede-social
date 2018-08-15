@@ -12,7 +12,7 @@ function buttonClick() {
   var newPost = $('#post-content').val();
   $('#post-content').val('');
 
-  var postsFromDB = addPostToDB(newPost);
+  var postsFromDB = addPostToDB(newPost, 0);
 
   createPost(newPost, postsFromDB.key);
 }
