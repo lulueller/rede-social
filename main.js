@@ -1,14 +1,6 @@
 $(document).ready(function() {
   $('#login-button').click(logInClick);
-  
-  $('#register-user-button').on('click', function(event) {
-    event.preventDefault();
-
-    var email = $('#register-email').val();
-    var password = $('#register-password').val();
-
-    registerUser(email, password);
-  });
+  $('#register-user-button').click(registerClick);
 
 });
 

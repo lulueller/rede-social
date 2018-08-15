@@ -10,6 +10,8 @@ $(document).ready(function() {
 
 function buttonClick() {
   var newPost = $('#post-content').val();
+  $('#post-content').val('');
+  
   var postsFromDB = addPostToDB(newPost);
 
   createPost(newPost, postsFromDB.key);
@@ -37,8 +39,16 @@ function createPost(content, key) {
   var newPost = $('#post-content').val();
 
   $('#posts-container').append(`
-      <li>
-        <p data-task-id=${key} >${content}</p>
-      </li>
-    `);
+    <li>
+      <div data-post-id=${key} class="my-2">
+        ${content}<br>
+        <button type="button" class="btn btn-dark" data-button-id="${key}-bt">Excluir</button>
+      </div>
+    </li>
+  `);
+
+  $(`button[data-button-id="${key}-bt"]`).click(function() {
+    database.ref(USER_ID + "/" + key).remove();
+    $(this).parents('li').remove();
+  });
 }
