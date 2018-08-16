@@ -47,6 +47,7 @@ function getPostsFromDB() {
       snapshot.forEach(function(childSnapshot) {
         var childKey = childSnapshot.key;
         var post = childSnapshot.val();
+        
         createPost(post, childKey);
       });
     });
@@ -64,7 +65,7 @@ function createPost(post, key) {
   $('#posts-container').prepend(`
     <li>
       <div data-post-id=${key} class="my-2">
-        <img src="${post.image}" class="w-75"/><br
+        <img src="${post.image}" class="w-75"/><br>
         <span data-content-id="${key}">${post.content}</span><br>
         <button type="button" class="btn btn-light" data-like-id="${key}">${post.likes} Curtidas</button>
         <button type="button" class="btn btn-dark" data-edit-id="${key}">Editar</button>
@@ -78,23 +79,18 @@ function createPost(post, key) {
     $(this).parents('li').remove();
   });
 
-  $(`button[data-edit-id="${key}"]`).click(function editPost() {
-    $(`span[data-content-id="${key}"]`).html(`
-        <textarea class="my-2" style="resize: none" id="edited-content" placeholder="Reescreva o post..."></textarea>
-        <button type="button" class="btn btn-secondary mb-5" data-edited-post-id="${key}">Ok</button>
-      `);
+  $(`button[data-edit-id="${key}"]`).click(function() {
+    var newContent = prompt(`Alterando o post: "${post.content}"`);
 
-    var editedContent = $('#edited-content').val();
-    $(`button[data-edited-post-id="${key}"]`).click(function() {
-      $(`button[data-like-id="${key}"]`).insertBefore(`<span data-content-id="${key}">${editedContent}</span><br>`);
-    })
-
-    database.ref(USER_ID + "/" + key).once('value')
-      .then(function() {
-        return database.ref(USER_ID + "/" + key).update({
-        content: editedContent
-        });
-      });
+    if (newContent === undefined || newContent.trim(' ') === '') {
+      alert('Não deixe seu post vazio!')
+    } else {
+      database.ref(USER_ID + "/" + key).update({
+        content: newContent
+      }).then(function(){
+        $(`span[data-text-id=${key}]`).text(newContent);
+      })
+    }
   });
 
   $(`button[data-like-id="${key}"]`).click(function() {
