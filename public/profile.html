@@ -3,19 +3,27 @@
   <head>
     <title>Petgram</title>
     <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Handlee" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=M+PLUS+1p" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="main.css">
   </head>
   <body>
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-2">
-          <img src="http://placekitten.com/100/100">
-          <p class="user-name"></p>
-          <button type="button" class="btn btn-outline-primary" name="follow-button">Seguir</button>
+      <div class="row h-100 text-center mb-3 purple-bg">
+        <div class="col-sm-12">
+        <h1 class="petgram-logo text-white">Petgram</h1>
         </div>
-        <div class="col-lg-4">
-          <h2>Petgram</h2>
+      </div>
+      <div class="row">
+        <div class="col-sm-3" style="background-color: ">
+          <div class="user-box w-50 ml-5 pb-3 text-center">
+            <img class="img-fluid mt-3" src="http://placekitten.com/150/150">
+            <p class="user-name">User</p>
+            <button type="button" class="btn lilac-bg" name="follow-button">Seguir</button>
+          </div>
+        </div>
+        <div class="col-sm-8" style="background-color: green">
           <textarea id="post-content" style="resize: none" placeholder="Escreva seu post!"></textarea><br>
           <input type="file" class="" id="file-input"><br>
           <button type="button" class="btn btn-primary mt-2" id="post-button">Postar</button>

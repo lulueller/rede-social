@@ -9,27 +9,45 @@ body {
 }
 
 ul {
-	list-style: none;
+  list-style: none;
 }
 
 .petgram-logo {
-	font-family: 'Handlee', cursive;
+  font-family: 'Handlee', cursive;
+  font-size: 45px;
 }
 
 .purple {
-	color: #AA2DFD;
+  color: #AA2DFD;
+}
+
+.purple-bg {
+ background-color: #AA2DFD 
 }
 
 .lilac {
-	color: #CB5DFA;
+  color: #CB5DFA;
 } 
 
 .lilac-bg {
-	background-color: #CB5DFA;
-	color: #FFFFFF;
+  background-color: #CB5DFA;
+  color: #FFFFFF;
 }
 
 .lilac-bg:hover, #login-button:hover, .register-button:hover {
-	background-color: #AA2DFD;
-	border-color: #AA2DFD;
+  background-color: #AA2DFD;
+  border-color: #AA2DFD;
 }
+
+.user-box {
+  background-color: #E2A9FB;
+  border-radius: 5px;
+}
+
+img {
+  border-radius: 5px;
+}
+
+/*@media screen && (max-width: 576px) {
+  
+}*/
