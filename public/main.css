@@ -5,8 +5,31 @@ html {
 body {
   height: 100vh;
   margin: 0;
+  font-family: 'M PLUS 1p', sans-serif;
 }
 
 ul {
 	list-style: none;
+}
+
+.petgram-logo {
+	font-family: 'Handlee', cursive;
+}
+
+.purple {
+	color: #AA2DFD;
+}
+
+.lilac {
+	color: #CB5DFA;
+} 
+
+.lilac-bg {
+	background-color: #CB5DFA;
+	color: #FFFFFF;
+}
+
+.lilac-bg:hover, #login-button:hover, .register-button:hover {
+	background-color: #AA2DFD;
+	border-color: #AA2DFD;
 }
