@@ -16,22 +16,21 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-3" style="background-color: ">
-          <div class="user-box w-50 ml-5 pb-3 text-center">
-            <img class="img-fluid mt-3" src="http://placekitten.com/150/150">
+        <div class="col-sm-3 bg-light text-center mx-2 pb-2 round-border">
+            <img class="img-fluid mt-3 round-border" src="http://placekitten.com/150/150">
             <p class="user-name">User</p>
-            <button type="button" class="btn lilac-bg" name="follow-button">Seguir</button>
-          </div>
+            <button type="button" class="btn btn-block lilac-bg" name="follow-button">Seguir</button>
         </div>
-        <div class="col-sm-8" style="background-color: green">
-          <textarea id="post-content" style="resize: none" placeholder="Escreva seu post!"></textarea><br>
+        <div class="col-sm-8 bg-light round-border">
+          <h4>Qual pet fofo você vai postar hoje?</h4>
+          <textarea id="post-content" class="w-100 mb-2 round-border" style="resize: none" placeholder="Escreva seu post e escolha uma foto!"></textarea><br>
           <input type="file" class="" id="file-input"><br>
-          <button type="button" class="btn btn-primary mt-2" id="post-button">Postar</button>
+          <button type="button" class="btn btn-block mt-2 text-white purple-bg" id="post-button">Postar</button>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-6 h-100">
-          <h4>Meus pets</h4>
+        <div class="col-sm-12 h-100">
+          <h4>NewsPet</h4>
           <!-- container dos posts que virão via JS-->
           <ul id="posts-container">
           </ul>

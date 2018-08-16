@@ -39,13 +39,18 @@ ul {
   border-color: #AA2DFD;
 }
 
-.user-box {
-  background-color: #E2A9FB;
+.purple-bg:hover {
+  background-color: #CB5DFA;
+  border-color: #CB5DFA;  
+}
+
+.round-border {
   border-radius: 5px;
 }
 
-img {
-  border-radius: 5px;
+textarea {
+  border-style: none;
+  background-color: white;
 }
 
 /*@media screen && (max-width: 576px) {
