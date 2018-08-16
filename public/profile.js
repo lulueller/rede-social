@@ -29,18 +29,19 @@ async function buttonClick() {
     imageURL = await uploadImage(file);
   }
 
-  console.log(imageURL);
-
   var postContent = $('#post-content').val();
   $('#post-content').val('');
+
+  var permission = $('#radio-filter:checked').val();
 
   var post = {
     content: postContent,
     image: imageURL,
-    likes: 0
+    likes: 0,
+    canView: permission
   }
 
-  var postsFromDB = addPostToDB(postContent, imageURL);
+  var postsFromDB = addPostToDB(postContent, imageURL, permission);
 
   createPost(post, postsFromDB.key);
 }
@@ -57,11 +58,12 @@ function getPostsFromDB() {
     });
 }
 
-function addPostToDB(text, image) {
+function addPostToDB(text, image, permission) {
   return database.ref(PROFILE_ID + '/posts/').push({
     content: text,
     image: image,
-    likes: 0
+    likes: 0,
+    canView: permission
   });
 }
 
@@ -109,11 +111,9 @@ function createPost(post, key) {
   });
 }
 
-
-
 function followBtn() {
   //user_id segue profile_id
-  console.log('botao seguir');
+  $('#follow-button').text('Seguindo');
   database.ref(USER_ID + '/following/').push({
     user_id: PROFILE_ID
   });
@@ -122,12 +122,10 @@ function followBtn() {
   });
 }
 
-
 function loadUserProfile(userId) {
   var user = database.ref(userId + "/profile").once('value')
     .then(function (snapshot) {
       var user = snapshot.val();
-      console.log(user);
       $('.user-name').html(user.name);
     });
 }
