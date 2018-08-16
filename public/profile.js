@@ -42,7 +42,7 @@ async function buttonClick() {
 }
 
 function getPostsFromDB() {
-  database.ref(USER_ID).once('value')
+  database.ref(USER_ID + "/posts/").once('value')
     .then(function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
         var childKey = childSnapshot.key;
@@ -75,7 +75,7 @@ function createPost(post, key) {
   `);
 
   $(`button[data-delete-id="${key}"]`).click(function() {
-    database.ref(USER_ID + '/posts/' + key).remove();
+    database.ref(USER_ID + "/posts/" + key).remove();
     $(this).parents('li').remove();
   });
 
