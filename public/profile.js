@@ -5,7 +5,6 @@ $(document).ready(function() {
 
   getPostsFromDB();
   $('#post-button').click(buttonClick);
-  $('#upload-button').click(uploadBtnClick);
 
 });
 
@@ -61,10 +60,10 @@ function addPostToDB(text, image) {
 }
 
 function createPost(post, key) {
-  $('#posts-container').append(`
+  $('#posts-container').prepend(`
     <li>
       <div data-post-id=${key} class="my-2">
-        <img src="${post.image}" /><br
+        <img src="${post.image}" class="w-75"/><br
         <span data-content-id="${key}">${post.content}</span><br>
         <button type="button" class="btn btn-light" data-like-id="${key}">${post.likes} Curtidas</button>
         <button type="button" class="btn btn-dark" data-edit-id="${key}">Editar</button>
@@ -109,30 +108,3 @@ function createPost(post, key) {
       });
   });
 }
-
-// function uploadBtnClick() {
-//   var file = $('#file-input').prop('files')[0];
-//
-//   console.log(new Date().getTime() + '-' + file.name);
-//
-//   console.log(file.name);
-//   var imageRef = firebase.storage().ref().child(USER_ID + "/" + file.name);
-//   imageRef.put(file)
-//     .then(
-//       function(snapshot){
-//         console.log(snapshot);
-//         console.log(imageRef.fullPath);
-//       }
-//     )
-//     .then(() => {
-//       imageRef.getDownloadURL().then((val) => {
-//         console.log(val);
-//       });
-//     });
-// }
-
-// Postar texto + imagem
-//   + text area + input file + botao pra postar
-//   + salvar texto no banco
-//   + pegar id do post no banco
-//   + tenho arquivo ? se sim, upload junto com texto
