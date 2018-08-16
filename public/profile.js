@@ -111,23 +111,22 @@ function createPost(post, key) {
 
 
 
-// function followBtn() {
-//   //user_id segue profile_id
-//   console.log('botao seguir');
-//   database.ref(USER_ID + '/following/').push({
-//     user_id: PROFILE_ID
-//   });
-//   database.ref(PROFILE_ID + '/followers/').push({
-//     user_id: USER_ID
-//   });
-// }
+function followBtn() {
+  //user_id segue profile_id
+  alert('Seguindo!');
+  database.ref(USER_ID + '/following/').push({
+    user_id: PROFILE_ID
+  });
+  database.ref(PROFILE_ID + '/followers/').push({
+    user_id: USER_ID
+  });
+}
 
 
 function loadUserProfile(userId) {
   var user = database.ref(userId + "/profile").once('value')
     .then(function (snapshot) {
       var user = snapshot.val();
-      console.log(user);
       $('.user-name').html(user.name);
     });
 }
