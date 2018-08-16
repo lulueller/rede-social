@@ -5,6 +5,7 @@ $(document).ready(function() {
 
   getPostsFromDB();
   $('#post-button').click(buttonClick);
+  $('#follow-button').on('click', followBtn);
 
 });
 
@@ -41,19 +42,19 @@ async function buttonClick() {
 }
 
 function getPostsFromDB() {
-  database.ref(USER_ID).once('value')
+  database.ref(USER_ID + "/posts/").once('value')
     .then(function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
         var childKey = childSnapshot.key;
         var post = childSnapshot.val();
-        
+
         createPost(post, childKey);
       });
     });
 }
 
 function addPostToDB(text, image) {
-  return database.ref(USER_ID).push({
+  return database.ref(USER_ID + '/posts/').push({
     content: text,
     image: image,
     likes: 0
@@ -74,7 +75,7 @@ function createPost(post, key) {
   `);
 
   $(`button[data-delete-id="${key}"]`).click(function() {
-    database.ref(USER_ID + "/" + key).remove();
+    database.ref(USER_ID + "/posts/" + key).remove();
     $(this).parents('li').remove();
   });
 
@@ -85,7 +86,7 @@ function createPost(post, key) {
       alert('Não deixe seu post vazio!')
     } else {
       $(`span[data-text-id=${key}]`).html(newContent);
-      database.ref(USER_ID + "/" + key).update({
+      database.ref(USER_ID + "/posts/" + key).update({
         content: newContent
       })
     }
@@ -95,11 +96,17 @@ function createPost(post, key) {
 
     $(this).html(`${post.likes += 1} Curtidas`);
 
-    database.ref(USER_ID + "/" + key).once('value')
+    database.ref(USER_ID + "/posts/" + key).once('value')
       .then(function() {
-        return database.ref(USER_ID + "/" + key).update({
+        return database.ref(USER_ID + "/posts/" + key).update({
         likes: post.likes
         });
       });
   });
+}
+
+
+
+function followBtn() {
+  console.log('seguir' + USER_ID);
 }

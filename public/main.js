@@ -16,13 +16,16 @@ function logInClick(event) {
 function registerClick(event) {
   event.preventDefault();
 
-  var name = $('#user-name').val();
-  $('#user-name').val('');
-  var email = $('#register-email').val();
-  $('#register-email').val('');
-  var password = $('#register-password').val();
+  var user = {
+    name: $('#user-name').val(),
+    email: $('#register-email').val(),
+    password: $('#register-password').val()
+  };
 
-  registerUser(email, password);
+  $('#user-name').val('');
+  $('#register-email').val('');
+
+  registerUser(user);
 }
 
 function logInUser(email, password) {
@@ -39,12 +42,13 @@ function logInUser(email, password) {
 }
 
 
-function registerUser(email, password) {
-  firebase.auth().createUserWithEmailAndPassword(email, password)
+function registerUser(user) {
+  firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
     .then(function(response) {
       var userId = response.user.uid;
-      redirectToNewsFeed(userId); 
-    })    
+      firebase.database().ref(userId + '/profile').push(user)
+        .then(() => redirectToNewsFeed(userId));
+    })
     .catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
