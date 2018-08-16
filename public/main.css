@@ -53,6 +53,10 @@ textarea {
   background-color: white;
 }
 
+.post-text {
+  font-size: 20px;
+}
+
 /*@media screen && (max-width: 576px) {
   
 }*/
