@@ -1,6 +1,5 @@
 var database = firebase.database();
 var USER_ID = window.location.search.match(/\?id=(.*)/)[1];
-var selectedFile;
 
 $(document).ready(function() {
 
@@ -10,13 +9,36 @@ $(document).ready(function() {
 
 });
 
-function buttonClick() {
-  var newPost = $('#post-content').val();
+function uploadImage(file) {
+  var fileName = (new Date().getTime()) + '-' + file.name;
+  var imageRef = firebase.storage().ref().child(USER_ID + "/" + fileName);
+  return imageRef.put(file).then( () => imageRef.getDownloadURL());
+}
+
+async function buttonClick() {
+
+  // verifica se existe arquivo
+  var file = $('#file-input').prop('files')[0];
+  var imageURL = '';
+
+  if (file !== undefined) {
+    imageURL = await uploadImage(file);
+  }
+
+  console.log(imageURL);
+
+  var postContent = $('#post-content').val();
   $('#post-content').val('');
 
-  var postsFromDB = addPostToDB(newPost);
+  var post = {
+    content: postContent,
+    image: imageURL,
+    likes: 0
+  }
 
-  createPost(newPost, 0, postsFromDB.key);
+  var postsFromDB = addPostToDB(postContent, imageURL);
+
+  createPost(post, postsFromDB.key);
 }
 
 function getPostsFromDB() {
@@ -24,26 +46,27 @@ function getPostsFromDB() {
     .then(function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
         var childKey = childSnapshot.key;
-        var childData = childSnapshot.val();
-
-        createPost(childData.content, childData.likes, childKey);
+        var post = childSnapshot.val();
+        createPost(post, childKey);
       });
     });
 }
 
-function addPostToDB(post) {
+function addPostToDB(text, image) {
   return database.ref(USER_ID).push({
-    content: post,
+    content: text,
+    image: image,
     likes: 0
   });
 }
 
-function createPost(content, likes, key) {
+function createPost(post, key) {
   $('#posts-container').append(`
     <li>
       <div data-post-id=${key} class="my-2">
-        <span data-content-id="${key}">${content}</span><br>
-        <button type="button" class="btn btn-light" data-like-id="${key}">${likes} Curtidas</button>
+        <img src="${post.image}" /><br
+        <span data-content-id="${key}">${post.content}</span><br>
+        <button type="button" class="btn btn-light" data-like-id="${key}">${post.likes} Curtidas</button>
         <button type="button" class="btn btn-dark" data-edit-id="${key}">Editar</button>
         <button type="button" class="btn btn-dark" data-delete-id="${key}">Excluir</button>
       </div>
@@ -65,13 +88,13 @@ function createPost(content, likes, key) {
     $(`button[data-edited-post-id="${key}"]`).click(function() {
       $(`button[data-like-id="${key}"]`).insertBefore(`<span data-content-id="${key}">${editedContent}</span><br>`);
     })
-    
+
     database.ref(USER_ID + "/" + key).once('value')
       .then(function() {
         return database.ref(USER_ID + "/" + key).update({
         content: editedContent
-        });    
-      }); 
+        });
+      });
   });
 
   $(`button[data-like-id="${key}"]`).click(function() {
@@ -87,30 +110,26 @@ function createPost(content, likes, key) {
   });
 }
 
-function uploadBtnClick() {
-  var file = $('#file-input').prop('files')[0];
-
-  // const name = (+new Date()) + '-' + file.name;
-  // var imageRef = firebase.storage().ref().child(USER_ID + "/" + name);
-  // imageRef.put(file).then(
-  //   function(snapshot){
-  //     alert('Upload concluído!');
-
-  console.log(file.name);
-  var imageRef = firebase.storage().ref().child(USER_ID + "/" + file.name);
-  imageRef.put(file)
-    .then(
-      function(snapshot){
-        console.log(snapshot);
-        console.log(imageRef.fullPath);
-      }
-    )
-    .then(() => {
-      imageRef.getDownloadURL().then((val) => {
-        console.log(val);
-      });
-    });
-}
+// function uploadBtnClick() {
+//   var file = $('#file-input').prop('files')[0];
+//
+//   console.log(new Date().getTime() + '-' + file.name);
+//
+//   console.log(file.name);
+//   var imageRef = firebase.storage().ref().child(USER_ID + "/" + file.name);
+//   imageRef.put(file)
+//     .then(
+//       function(snapshot){
+//         console.log(snapshot);
+//         console.log(imageRef.fullPath);
+//       }
+//     )
+//     .then(() => {
+//       imageRef.getDownloadURL().then((val) => {
+//         console.log(val);
+//       });
+//     });
+// }
 
 // Postar texto + imagem
 //   + text area + input file + botao pra postar
