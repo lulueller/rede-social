@@ -80,15 +80,14 @@ function createPost(post, key) {
   });
 
   $(`button[data-edit-id="${key}"]`).click(function() {
-    var newContent = prompt(`Alterando o post: "${post.content}"`);
+    var newContent = prompt("Alterando o post:", `${post.content}`);
 
     if (newContent === undefined || newContent.trim(' ') === '') {
       alert('Não deixe seu post vazio!')
     } else {
+      $(`span[data-text-id=${key}]`).html(newContent);
       database.ref(USER_ID + "/" + key).update({
         content: newContent
-      }).then(function(){
-        $(`span[data-text-id=${key}]`).text(newContent);
       })
     }
   });

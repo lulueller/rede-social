@@ -17,7 +17,9 @@ function registerClick(event) {
   event.preventDefault();
 
   var name = $('#user-name').val();
+  $('#user-name').val('');
   var email = $('#register-email').val();
+  $('#register-email').val('');
   var password = $('#register-password').val();
 
   registerUser(email, password);
