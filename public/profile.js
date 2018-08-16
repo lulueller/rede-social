@@ -5,6 +5,7 @@ $(document).ready(function() {
 
   getPostsFromDB();
   $('#post-button').click(buttonClick);
+  $('#follow-button').on('click', followBtn);
 
 });
 
@@ -52,7 +53,7 @@ function getPostsFromDB() {
 }
 
 function addPostToDB(text, image) {
-  return database.ref(USER_ID).push({
+  return database.ref(USER_ID + '/posts').push({
     content: text,
     image: image,
     likes: 0
@@ -98,13 +99,19 @@ function createPost(post, key) {
 
   $(`button[data-like-id="${key}"]`).click(function() {
 
-    $(this).html(`${likes += 1} Curtidas`);
+    $(this).html(`${post.likes += 1} Curtidas`);
 
     database.ref(USER_ID + "/" + key).once('value')
       .then(function() {
         return database.ref(USER_ID + "/" + key).update({
-        likes: likes
+        likes: post.likes
         });
       });
   });
+}
+
+
+
+function followBtn() {
+  console.log('seguir' + USER_ID);
 }
