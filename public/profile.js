@@ -68,12 +68,12 @@ function addPostToDB(text, image) {
 function createPost(post, key) {
   $('#posts-container').prepend(`
     <li>
-      <div data-post-id=${key} class="my-2">
-        <img src="${post.image}" class="w-75"/><br>
-        <span data-content-id="${key}">${post.content}</span><br>
-        <button type="button" class="btn btn-light" data-like-id="${key}">${post.likes} Curtidas</button>
-        <button type="button" class="btn btn-dark" data-edit-id="${key}">Editar</button>
-        <button type="button" class="btn btn-dark" data-delete-id="${key}">Excluir</button>
+      <div data-post-id=${key} class="my-4">
+        <img src="${post.image}" class="w-75 round-border"/><br>
+        <span class="post-text" data-content-id="${key}">${post.content}</span><br>
+        <button type="button" class="btn lilac-bg" data-like-id="${key}">${post.likes} Curtidas</button>
+        <button type="button" class="btn text-white purple-bg" data-edit-id="${key}">Editar</button>
+        <button type="button" class="btn text-white purple-bg" data-delete-id="${key}">Excluir</button>
       </div>
     </li>
   `);

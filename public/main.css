@@ -5,8 +5,58 @@ html {
 body {
   height: 100vh;
   margin: 0;
+  font-family: 'M PLUS 1p', sans-serif;
 }
 
 ul {
-	list-style: none;
+  list-style: none;
 }
+
+.petgram-logo {
+  font-family: 'Handlee', cursive;
+  font-size: 45px;
+}
+
+.purple {
+  color: #AA2DFD;
+}
+
+.purple-bg {
+ background-color: #AA2DFD 
+}
+
+.lilac {
+  color: #CB5DFA;
+} 
+
+.lilac-bg {
+  background-color: #CB5DFA;
+  color: #FFFFFF;
+}
+
+.lilac-bg:hover, #login-button:hover, .register-button:hover {
+  background-color: #AA2DFD;
+  border-color: #AA2DFD;
+}
+
+.purple-bg:hover {
+  background-color: #CB5DFA;
+  border-color: #CB5DFA;  
+}
+
+.round-border {
+  border-radius: 5px;
+}
+
+textarea {
+  border-style: none;
+  background-color: white;
+}
+
+.post-text {
+  font-size: 20px;
+}
+
+/*@media screen && (max-width: 576px) {
+  
+}*/
