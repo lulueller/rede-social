@@ -1,17 +1,21 @@
 var database = firebase.database();
-var USER_ID = window.location.search.match(/\?id=(.*)/)[1];
+var USER_ID = window.location.search.match(/\?user_id=(.*)&/)[1];
+var PROFILE_ID = window.location.search.match(/profile_id=(.*)/)[1];
 
 $(document).ready(function() {
 
   getPostsFromDB();
   $('#post-button').click(buttonClick);
-  $('#follow-button').on('click', followBtn);
+  $('#follow-button').click(followBtn);
+  loadUserProfile(PROFILE_ID);
+  //console.log(user);
+  //$('.user-name').val(user.name);
 
 });
 
 function uploadImage(file) {
   var fileName = (new Date().getTime()) + '-' + file.name;
-  var imageRef = firebase.storage().ref().child(USER_ID + "/" + fileName);
+  var imageRef = firebase.storage().ref().child(PROFILE_ID + "/" + fileName);
   return imageRef.put(file).then( () => imageRef.getDownloadURL());
 }
 
@@ -42,7 +46,7 @@ async function buttonClick() {
 }
 
 function getPostsFromDB() {
-  database.ref(USER_ID + "/posts/").once('value')
+  database.ref(PROFILE_ID + "/posts/").once('value')
     .then(function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
         var childKey = childSnapshot.key;
@@ -54,7 +58,7 @@ function getPostsFromDB() {
 }
 
 function addPostToDB(text, image) {
-  return database.ref(USER_ID + '/posts/').push({
+  return database.ref(PROFILE_ID + '/posts/').push({
     content: text,
     image: image,
     likes: 0
@@ -75,7 +79,7 @@ function createPost(post, key) {
   `);
 
   $(`button[data-delete-id="${key}"]`).click(function() {
-    database.ref(USER_ID + "/posts/" + key).remove();
+    database.ref(PROFILE_ID + "/posts/" + key).remove();
     $(this).parents('li').remove();
   });
 
@@ -86,7 +90,7 @@ function createPost(post, key) {
       alert('Não deixe seu post vazio!')
     } else {
       $(`span[data-text-id=${key}]`).html(newContent);
-      database.ref(USER_ID + "/posts/" + key).update({
+      database.ref(PROFILE_ID + "/posts/" + key).update({
         content: newContent
       })
     }
@@ -96,9 +100,9 @@ function createPost(post, key) {
 
     $(this).html(`${post.likes += 1} Curtidas`);
 
-    database.ref(USER_ID + "/posts/" + key).once('value')
+    database.ref(PROFILE_ID + "/posts/" + key).once('value')
       .then(function() {
-        return database.ref(USER_ID + "/posts/" + key).update({
+        return database.ref(PROFILE_ID + "/posts/" + key).update({
         likes: post.likes
         });
       });
@@ -108,5 +112,22 @@ function createPost(post, key) {
 
 
 function followBtn() {
-  console.log('seguir' + USER_ID);
+  //user_id segue profile_id
+  console.log('botao seguir');
+  database.ref(USER_ID + '/following/').push({
+    user_id: PROFILE_ID
+  });
+  database.ref(PROFILE_ID + '/followers/').push({
+    user_id: USER_ID
+  });
+}
+
+
+function loadUserProfile(userId) {
+  var user = database.ref(userId + "/profile").once('value')
+    .then(function (snapshot) {
+      var user = snapshot.val();
+      console.log(user);
+      $('.user-name').html(user.name);
+    });
 }

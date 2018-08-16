@@ -46,7 +46,7 @@ function registerUser(user) {
   firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
     .then(function(response) {
       var userId = response.user.uid;
-      firebase.database().ref(userId + '/profile').push(user)
+      firebase.database().ref(userId + '/profile').set(user)
         .then(() => redirectToNewsFeed(userId));
     })
     .catch(function(error) {
@@ -57,5 +57,7 @@ function registerUser(user) {
 }
 
 function redirectToNewsFeed(userId) {
-  window.location = "profile.html?id=" + userId;
+  window.location
+    = "profile.html?user_id=" + userId
+    + "&profile_id=" + userId;
 }
