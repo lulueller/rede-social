@@ -1,47 +1,44 @@
-var database = firebase.database();
-var USER_ID = window.location.search.match(/\?user_id=(.*)&/)[1];
-var PROFILE_ID = window.location.search.match(/profile_id=(.*)/)[1];
+const database = firebase.database();
+const USER_ID = window.location.search.match(/\?user_id=(.*)&/)[1];
+const PROFILE_ID = window.location.search.match(/profile_id=(.*)/)[1];
 
 $(document).ready(function() {
 
   getPostsFromDB();
-  $('#post-button').click(buttonClick);
-  $('#follow-button').click(followBtn);
+  $('#post-button').click(postButton);
+  $('#follow-button').click(followButton);
   loadUserProfile(PROFILE_ID);
-  //console.log(user);
-  //$('.user-name').val(user.name);
-
 });
 
 function uploadImage(file) {
-  var fileName = (new Date().getTime()) + '-' + file.name;
-  var imageRef = firebase.storage().ref().child(PROFILE_ID + "/" + fileName);
+  const fileName = (new Date().getTime()) + '-' + file.name;
+  let imageRef = firebase.storage().ref().child(PROFILE_ID + "/" + fileName);
   return imageRef.put(file).then( () => imageRef.getDownloadURL());
 }
 
-async function buttonClick() {
+async function postButton() {
 
   // verifica se existe arquivo
-  var file = $('#file-input').prop('files')[0];
-  var imageURL = '';
+  const file = $('#file-input').prop('files')[0];
+  let imageURL = '';
 
   if (file !== undefined) {
     imageURL = await uploadImage(file);
   }
 
-  var postContent = $('#post-content').val();
+  const postContent = $('#post-content').val();
   $('#post-content').val('');
 
-  var permission = $('#radio-filter:checked').val();
+  const permission = $('#radio-filter:checked').val();
 
-  var post = {
+  const post = {
     content: postContent,
     image: imageURL,
     likes: 0,
     canView: permission
   }
 
-  var postsFromDB = addPostToDB(postContent, imageURL, permission);
+  let postsFromDB = addPostToDB(postContent, imageURL, permission);
 
   createPost(post, postsFromDB.key);
 }
@@ -80,26 +77,35 @@ function createPost(post, key) {
     </li>
   `);
 
+  deletePost(post, key);
+  editPost(post, key);
+  likePost(post, key);
+}
+
+function deletePost(post, key) {
   $(`button[data-delete-id="${key}"]`).click(function() {
     database.ref(PROFILE_ID + "/posts/" + key).remove();
     $(this).parents('li').remove();
   });
+}
 
+function editPost(post, key) {
   $(`button[data-edit-id="${key}"]`).click(function() {
-    var newContent = prompt("Alterando o post:", `${post.content}`);
+    let newContent = prompt("Alterando o post:", `${post.content}`);
 
     if (newContent === undefined || newContent.trim(' ') === '') {
       alert('Não deixe seu post vazio!')
     } else {
-      $(`span[data-text-id=${key}]`).html(newContent);
+      $(`span[data-content-id=${key}]`).html(newContent);
       database.ref(PROFILE_ID + "/posts/" + key).update({
         content: newContent
       })
     }
   });
+}
 
+function likePost(post, key) {
   $(`button[data-like-id="${key}"]`).click(function() {
-
     $(this).html(`${post.likes += 1} Curtidas`);
 
     database.ref(PROFILE_ID + "/posts/" + key).once('value')
@@ -111,7 +117,7 @@ function createPost(post, key) {
   });
 }
 
-function followBtn() {
+function followButton() {
   //user_id segue profile_id
   $('#follow-button').text('Seguindo');
   database.ref(USER_ID + '/following/').push({
@@ -123,9 +129,9 @@ function followBtn() {
 }
 
 function loadUserProfile(userId) {
-  var user = database.ref(userId + "/profile").once('value')
+  let user = database.ref(userId + "/profile").once('value')
     .then(function (snapshot) {
-      var user = snapshot.val();
+      let user = snapshot.val();
       $('.user-name').html(user.name);
     });
 }
