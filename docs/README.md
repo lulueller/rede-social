@@ -1,10 +1,17 @@
-Petgram - rede social só para pets fofos.
+# Petgram
+#### Rede social só para pets fofos.
 
-Link para o planejamento no Trello: 
+> Demo: https://rede-social-7f5fc.firebaseapp.com/index.html
 
-https://trello.com/b/WATlxZmv
+#### Objetivos
+- Ser capaz de criar um perfil
+- Um lugar para poder escrever  _posts_
+- Um lugar para adicionar fotos
+- Ser  _mobile friendly_
 
-E-mail de teste: 
 
-mary@email.com
-123456
+> Planejamento no Trello: https://trello.com/b/WATlxZmv
+
+> E-mail de teste: 
+> mary@email.com
+> 123456
